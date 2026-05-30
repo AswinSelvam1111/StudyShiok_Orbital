@@ -33,11 +33,11 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
+    --text-h: #16171d;
+    --bg: #f3f4f6;
     --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
+    --code-bg: #7a82b8;
+    --accent: #2f1747;
     --accent-bg: rgba(192, 132, 252, 0.15);
     --accent-border: rgba(192, 132, 252, 0.5);
     --social-bg: rgba(47, 48, 58, 0.5);
