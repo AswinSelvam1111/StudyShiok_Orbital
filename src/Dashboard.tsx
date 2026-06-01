@@ -1,78 +1,91 @@
-import React, { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
-import { useAuth } from "@/lib/AuthContext";
-import SpotCard from "@/components/spots/SpotCard";
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
-export default function Dashboard() {
-  const { user } = useAuth();
+const Dashboard: React.FC = () => {
+  const navigate = useNavigate()
+  const [search, setSearch] = useState('')
 
-  const { data: bookmarks = [] } = useQuery({
-    queryKey: ["bookmarks", user?.id],
-    queryFn: () => base44.entities.Bookmark.filter({ created_by_id: user?.id }),
-    enabled: !!user,
-  });
+  // dummy stats (later from backend)
+  const stats = {
+    bookmarkedCount: 3,
+    ratingsGiven: 12,
+    avgRating: 4.3,
+    notBusySpots: 5
+  }
 
-  const { data: spots = [] } = useQuery({
-    queryKey: ["spots"],
-    queryFn: () => base44.entities.StudySpot.filter({ status: "approved" }),
-  });
-
-  const bookmarkedSpots = useMemo(() => {
-    const bookmarkIds = bookmarks.map((bookmark) => bookmark.spot_id);
-    return spots.filter((spot) => bookmarkIds.includes(spot.id));
-  }, [bookmarks, spots]);
-
-  const recommendedSpots = [...spots]
-    .sort((a, b) => (b.avg_overall_rating || 0) - (a.avg_overall_rating || 0))
-    .slice(0, 3);
+  // dummy bookmarked spot (reuse existing structure)
+  const bookmarkedSpots = [
+    {
+      id: 1,
+      name: 'UTown Library',
+      campusArea: 'UTown',
+      rating: 4.6
+    }
+  ]
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-8">
-      <h1 className="text-2xl font-bold">
-        Welcome back{user?.full_name ? `, ${user.full_name.split(" ")[0]}` : ""} 👋
-      </h1>
+    <div className="page">
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="border rounded-xl p-4">
-          <p className="text-sm text-gray-500">Bookmarks</p>
-          <p className="text-2xl font-bold">{bookmarks.length}</p>
+      {/* NAVBAR */}
+      <div className="navbar">
+        <div className="navbarLinks">
+          <Link to="/explore">Explore</Link>
+          <Link to="/maps">Maps</Link>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/suggest">Suggest a Spot</Link>
         </div>
 
-        <div className="border rounded-xl p-4">
-          <p className="text-sm text-gray-500">Study Spots</p>
-          <p className="text-2xl font-bold">{spots.length}</p>
-        </div>
-
-        <div className="border rounded-xl p-4">
-          <p className="text-sm text-gray-500">Recommended</p>
-          <p className="text-2xl font-bold">{recommendedSpots.length}</p>
-        </div>
+        <button
+          className="logoutButton"
+          onClick={() => navigate('/login')}
+        >
+          Log Out
+        </button>
       </div>
 
-      <section>
-        <h2 className="text-xl font-semibold mb-4">Your Bookmarks</h2>
+      {/* TITLE */}
+      <h1 className="pageTitle">Dashboard</h1>
 
-        {bookmarkedSpots.length === 0 ? (
-          <p>You have not bookmarked any spots yet.</p>
-        ) : (
-          <div className="grid grid-cols-3 gap-4">
-            {bookmarkedSpots.map((spot) => (
-              <SpotCard key={spot.id} spot={spot} />
-            ))}
-          </div>
-        )}
-      </section>
+      {/* STATS ROW */}
+      <div className="statsGrid">
 
-      <section>
-        <h2 className="text-xl font-semibold mb-4">Recommended Spots</h2>
-
-        <div className="grid grid-cols-3 gap-4">
-          {recommendedSpots.map((spot) => (
-            <SpotCard key={spot.id} spot={spot} />
-          ))}
+        <div className="statCard">
+          <h3>Bookmarked Spots</h3>
+          <p>{stats.bookmarkedCount}</p>
         </div>
-      </section>
+
+        <div className="statCard">
+          <h3>Ratings Given</h3>
+          <p>{stats.ratingsGiven}</p>
+        </div>
+
+        <div className="statCard">
+          <h3>Avg Rating Given</h3>
+          <p>{stats.avgRating}</p>
+        </div>
+
+        <div className="statCard">
+          <h3>Not Busy Spots</h3>
+          <p>{stats.notBusySpots}</p>
+        </div>
+
+      </div>
+
+      {/* BOOKMARKED SECTION */}
+      <h2 className="sectionTitle">Your Bookmarked Spots</h2>
+
+      <div className="cardGrid">
+        {bookmarkedSpots.map((spot) => (
+          <div key={spot.id} className="card">
+            <h3>{spot.name}</h3>
+            <p>{spot.campusArea}</p>
+            <p>⭐ {spot.rating}</p>
+          </div>
+        ))}
+      </div>
+
     </div>
-  );
+  )
 }
+
+export default Dashboard

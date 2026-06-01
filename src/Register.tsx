@@ -36,7 +36,7 @@ function Register() {
 
         <button className="loginButton" onClick={handleRegister}>
           Register
-        </button> {/* register button, add API call later */}
+        </button> {/* register button, need to add API calls later */}
       </div>
     </div>
   )
