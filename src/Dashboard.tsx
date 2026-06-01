@@ -15,12 +15,7 @@ const Dashboard: React.FC = () => {
 
   // dummy bookmarked spot (reuse existing structure)
   const bookmarkedSpots = [
-    {
-      id: 1,
-      name: 'UTown Library',
-      campusArea: 'UTown',
-      rating: 4.6
-    }
+    { id: 1, name: 'ERC Level 2', campusArea: 'UTown', rating: 4.6, busyness: 'Moderately Busy' }
   ]
 
   return (
@@ -37,7 +32,7 @@ const Dashboard: React.FC = () => {
 
         <button
           className="logoutButton"
-          onClick={() => navigate('/login')}
+          onClick={() => navigate('/')}
         >
           Log Out
         </button>
@@ -79,7 +74,10 @@ const Dashboard: React.FC = () => {
           <div key={spot.id} className="card">
             <h3>{spot.name}</h3>
             <p>{spot.campusArea}</p>
-            <p>⭐ {spot.rating}</p>
+            <div className="cardInfoRow">
+                <span><b>Rating:</b> {spot.rating} ⭐</span>
+                <span><b>{spot.busyness}</b></span>
+            </div>
           </div>
         ))}
       </div>

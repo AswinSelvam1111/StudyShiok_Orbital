@@ -26,27 +26,29 @@ function Login() {
         <h2>Welcome!</h2>
         <p>Login to your account</p>
 
-        <input
-          className="inputField"
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <div className="inputContainer">
+          <input
+            className="inputField"
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-        <input
-          className="inputField"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <input
+            className="inputField"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
         <button className="loginButton" onClick={handleLogin}>
           Login
         </button>
 
-        <Link to="/register" className="registerLink">
+        <Link to="/register" className="registerButton">
           New Here? Register Now!
         </Link>
       </div>

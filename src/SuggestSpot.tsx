@@ -65,7 +65,7 @@ const Suggest: React.FC = () => {
 
         <button
           className="logoutButton"
-          onClick={() => navigate('/login')}
+          onClick={() => navigate('/')}
         >
           Log Out
         </button>
